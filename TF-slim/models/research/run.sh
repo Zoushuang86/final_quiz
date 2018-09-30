@@ -38,6 +38,7 @@ do
     echo "############" $i "training #################"
     python ./object_detection/train.py --train_dir=$train_dir --pipeline_config_path=$pipeline_config_path
 
+    echo "############" $i "training finished #################"
     #echo "############" $i "evaluating, this takes a long while #################"
     #python ./object_detection/eval.py --checkpoint_dir=$checkpoint_dir --eval_dir=$eval_dir --pipeline_config_path=$pipeline_config_path
 done
