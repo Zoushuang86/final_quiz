@@ -10,14 +10,14 @@ export PYTHONPATH=$PYTHONPATH:$DIR:$DIR/slim:$DIR/object_detection
 
 # 定义各目录
 output_dir=/output  # 训练目录
-dataset_dir=/data/zoushuang86/pascal-voc-2012-car-dataset # 数据集目录，这里是写死的，记得修改
+dataset_dir=/data/zoushuang86/jyz-dataset # 数据集目录，这里是写死的，记得修改
 
 train_dir=$output_dir/train
 checkpoint_dir=$train_dir
 eval_dir=$output_dir/eval
 
 # config文件
-config=faster_rcnn_resnet101_voc_train.config
+config=ssd_mobilenet_v1_coco.config
 pipeline_config_path=$output_dir/$config
 
 # 先清空输出目录，本地运行会有效果，tinymind上运行这一行没有任何效果
@@ -27,20 +27,19 @@ pipeline_config_path=$output_dir/$config
 # 因为dataset里面的东西是不允许修改的，所以这里要把config文件复制一份到输出目录
 cp $dataset_dir/$config $pipeline_config_path
 
-# for i in {0..4}  # for循环中的代码执行5此，这里的左右边界都包含，也就是一共训练500个step，每100step验证一次
-for i in {0}
+for i in {0..4}  # for循环中的代码执行5此，这里的左右边界都包含，也就是一共训练500个step，每100step验证一次
 do
     echo "############" $i "runnning #################"
     last=$[$i*100]
     current=$[($i+1)*100]
-    # sed -i "s/^  num_steps: $last$/  num_steps: $current/g" $pipeline_config_path  # 通过num_steps控制一次训练最多100step
+    sed -i "s/^  num_steps: $last$/  num_steps: $current/g" $pipeline_config_path  # 通过num_steps控制一次训练最多100step
 
     echo "############" $i "training #################"
     python ./object_detection/train.py --train_dir=$train_dir --pipeline_config_path=$pipeline_config_path
 
     echo "############" $i "training finished #################"
-    #echo "############" $i "evaluating, this takes a long while #################"
-    #python ./object_detection/eval.py --checkpoint_dir=$checkpoint_dir --eval_dir=$eval_dir --pipeline_config_path=$pipeline_config_path
+    echo "############" $i "evaluating, this takes a long while #################"
+    python ./object_detection/eval.py --checkpoint_dir=$checkpoint_dir --eval_dir=$eval_dir --pipeline_config_path=$pipeline_config_path
 done
 
 # 导出模型
