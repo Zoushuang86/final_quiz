@@ -70,7 +70,7 @@ flags.DEFINE_integer('ps_tasks', 0,
 flags.DEFINE_string('train_dir', '/output',
                     'Directory to save the checkpoints and training summaries.')
 
-flags.DEFINE_string('pipeline_config_path', '/data/zoushuang86/jyz-dataset/ssd_mobilenet_v1_coco.config',
+flags.DEFINE_string('pipeline_config_path', '',
                     'Path to a pipeline_pb2.TrainEvalPipelineConfig config '
                     'file. If provided, other configs are ignored')
 
