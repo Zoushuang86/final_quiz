@@ -17,7 +17,7 @@ checkpoint_dir=$train_dir
 eval_dir=$output_dir/eval
 
 # config文件
-config=ssd_mobilenet_v1_coco.config
+config=faster_rcnn_resnet101_pets.config
 pipeline_config_path=$output_dir/$config
 
 # 先清空输出目录，本地运行会有效果，tinymind上运行这一行没有任何效果
